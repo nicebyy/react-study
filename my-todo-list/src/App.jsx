@@ -2,7 +2,7 @@ import "./App.css";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
-import { useState } from "react";
+import {useReducer} from "react";
 import { todoData } from "./data/mockData";
 
 const mockData = [
@@ -11,27 +11,63 @@ const mockData = [
   todoData(false, "React 공부하기3"),
 ];
 
-const App = () => {
-  
-  const [todoList, setTodoList] = useState(mockData);
+// const reducer = (state,action)=>{
+//
+//     switch (action.type) {
+//
+//         case "CREATE" :
+//             return [action.data, ...state];
+//         case "UPDATE" :
+//             return state.map(todo => todo.id === action.targetId?
+//                 {... todo, isDone: !todo.isDone} : todo
+//             );
+//         case "DELETE" :
+//             return state.filter(todo => todo.id !== action.targetId);
+//         default :
+//             return state;
+//
+//     }
+// }
 
-  const onCreate = (content) => {
-    const newTodoData = todoData(false, content);
-    setTodoList([newTodoData, ...todoList]);
+const reducerV2 = (state,action)=>{
+
+    const actions = {
+        "CREATE": () => [action.data, ...state],
+        "UPDATE": () => state.map(item =>
+            item.id === action.targetId ? { ...item, isDone: !item.isDone } : item
+        ),
+        "DELETE": () => state.filter(item => item.id !== action.targetId)
+    };
+
+    return (actions[action.type] || (()=>state))();
+}
+
+const App = () => {
+
+    const [todoList, dispatch] = useReducer(reducerV2,mockData);
+
+    const onCreate = (content) => {
+
+    dispatch({
+        type:"CREATE",
+        data : todoData(false, content),
+    });
   };
 
   const onUpdate = (targetId)=>{
 
-      setTodoList(
-          todoList.map(todo => todo.id === targetId ? {... todo, isDone : !todo.isDone} : todo)
-      );
+      dispatch({
+          type : "UPDATE",
+          targetId : targetId,
+      })
   };
 
   const onDelete = (targetId)=>{
-      setTodoList(
-        todoList.filter(todo => todo.id !== targetId)
-      );
 
+      dispatch({
+          type : "DELETE",
+          targetId : targetId,
+      })
   }
 
   return (
