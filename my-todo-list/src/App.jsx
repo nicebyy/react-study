@@ -20,11 +20,25 @@ const App = () => {
     setTodoList([newTodoData, ...todoList]);
   };
 
+  const onUpdate = (targetId)=>{
+
+      setTodoList(
+          todoList.map(todo => todo.id === targetId ? {... todo, isDone : !todo.isDone} : todo)
+      );
+  };
+
+  const onDelete = (targetId)=>{
+      setTodoList(
+        todoList.filter(todo => todo.id !== targetId)
+      );
+
+  }
+
   return (
     <div className="App">
       <Header />
       <Editor onCreate={onCreate} />
-      <List todoList={todoList}/>
+      <List todoList={todoList} onUpdate={onUpdate} onDelete={onDelete}/>
     </div>
   );
 };
