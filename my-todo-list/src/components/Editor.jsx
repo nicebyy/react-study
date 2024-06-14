@@ -1,7 +1,10 @@
-import { useRef, useState } from "react";
+import {useContext, useRef, useState} from "react";
 import "./Editor.css";
+import {DispatchContext} from "../App.jsx";
 
-const Editor = ({ onCreate }) => {
+const Editor = () => {
+
+  const {onCreate} = useContext(DispatchContext);
   const [content, setContent] = useState("");
   const inputRef = useRef();
 
