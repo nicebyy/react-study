@@ -60,7 +60,7 @@ const App = () => {
     return (
         <div className="App">
             <Header/>
-            <TodoContext.Provider value={{todoList}}>
+            <TodoContext.Provider value={todoList}>
                 <DispatchContext.Provider value={memoizedDispatch}>
                     <Editor/>
                     <List/>

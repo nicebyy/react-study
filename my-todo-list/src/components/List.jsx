@@ -5,7 +5,7 @@ import {TodoContext} from "../App.jsx";
 
 const List = () => {
 
-    const {todoList} = useContext(TodoContext);
+    const todoList = useContext(TodoContext);
     const [search,setSearch] = useState("");
 
     const onChangeSearch = event => setSearch(event.target.value);
