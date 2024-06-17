@@ -11,9 +11,15 @@ export const DiaryList = ({data})=>{
     const [sortType, setSortType] = useState<string>("latest");
 
     const onChangeSortType : ChangeEventHandler<HTMLSelectElement> = (e)=>{
-
+        setSortType(e.target.value);
     }
-    console.log(data);
+
+    const getSortedDate = ()=>{
+        return data.toSorted((o1,o2) => sortType == "oldest" ?
+            o1.createdDate - o2.createdDate : o2.createdDate - o1.createdDate);
+    }
+
+    // const sortedData = getSortedDate();
 
     return (
         <div className="DiaryList">
@@ -30,7 +36,9 @@ export const DiaryList = ({data})=>{
             </div>
             <div className="list_wrapper">
                 {
-                    data.map((item)=> <DiaryItem key={item.id} {...item}></DiaryItem>)
+                    getSortedDate().map((item)=> {
+                        return <DiaryItem key={item.id} {...item}></DiaryItem>;
+                    })
                 }
             </div>
         </div>

@@ -22,7 +22,7 @@ export const DiaryItem = ({id, emotionId, createdDate, content} : DiaryType)=>{
             >
                 <div className="create_date">
                     {new Date(createdDate).toLocaleDateString()}
-                </div>wqq
+                </div>
                 <div className="content">
                     {content}
                 </div>
