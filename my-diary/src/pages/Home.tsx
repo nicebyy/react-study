@@ -3,9 +3,9 @@ import Header from "../components/Header.tsx";
 import Button from "../components/Button.tsx";
 import React, {useContext, useState} from "react";
 import {DiaryList} from "./DiaryList.tsx";
-import {DiaryStateContext} from "../App.tsx";
+import {DiaryStateContext, DiaryType} from "../App.tsx";
 
-const getMonthlyData = (pivotDate,data) => {
+const getMonthlyData = (pivotDate:Date, data:DiaryType[])  : DiaryType[] => {
 
     const beginTime = new Date(pivotDate.getFullYear(),pivotDate.getMonth(),1,0,0,0).getTime();
     const endTime = new Date(pivotDate.getFullYear(),pivotDate.getMonth()+1,0,23,59,59).getTime();
@@ -15,9 +15,9 @@ const getMonthlyData = (pivotDate,data) => {
 const Home = () =>{
 
     const [pivotDate, setPivotDate] = useState(new Date());
-    const data = useContext(DiaryStateContext);
+    const data : DiaryType[] | undefined = useContext(DiaryStateContext);
 
-    const monthlyData = getMonthlyData(pivotDate,data);
+    const monthlyData : DiaryType[] = getMonthlyData(pivotDate,data ?? []);
     console.log(monthlyData);
 
     const onIncreaseMonth = () =>{

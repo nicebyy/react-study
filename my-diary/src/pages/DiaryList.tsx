@@ -5,7 +5,11 @@ import {DiaryType} from "../util/MockData.ts";
 import {useNavigate} from "react-router-dom";
 import {ChangeEventHandler, useState} from "react";
 
-export const DiaryList = ({data})=>{
+interface DiaryListProps {
+    data: DiaryType[];
+}
+
+export const DiaryList = ({data} : DiaryListProps)=>{
 
     const nav = useNavigate();
     const [sortType, setSortType] = useState<string>("latest");
@@ -15,7 +19,7 @@ export const DiaryList = ({data})=>{
     }
 
     const getSortedDate = ()=>{
-        return data.toSorted((o1,o2) => sortType == "oldest" ?
+        return data.sort((o1,o2) => sortType == "oldest" ?
             o1.createdDate - o2.createdDate : o2.createdDate - o1.createdDate);
     }
 

@@ -4,10 +4,22 @@ import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import New from "./pages/New.tsx";
 import Diary from "./pages/Diary.tsx";
-import React, {createContext, useContext, useReducer, useRef} from "react";
+import React, {createContext, Dispatch, useContext, useReducer, useRef} from "react";
 import Edit from "./pages/Edit.tsx";
 
-const mockData = [
+export type DiaryType = {
+    id : number ,
+    createdDate : number,
+    emotionId : number,
+    content : string
+}
+
+type ActionType =
+    | { type: 'CREATE', data: DiaryType }
+    | { type: 'UPDATE', data: DiaryType }
+    | { type: 'DELETE', data: { id: number } };
+
+const mockData : DiaryType[] = [
 
     {
         id: 1,
@@ -29,7 +41,7 @@ const mockData = [
     },
 ];
 
-const reducer = (state, action) =>{
+const reducer = (state:DiaryType[], action:ActionType): DiaryType[] =>{
 
     switch (action.type){
         case "CREATE" :
@@ -47,8 +59,12 @@ const reducer = (state, action) =>{
     }
 }
 
-export const DiaryStateContext = createContext(undefined);
-export const DiaryDispatchContext = createContext();
+export const DiaryStateContext = createContext<DiaryType[] | undefined>([]);
+export const DiaryDispatchContext = createContext<{
+    onCreate: (emotionId: number, createdDate: number, content: string) => void;
+    onUpdate: (id: number, emotionId: number, createdDate: number, content: string) => void;
+    onDelete: (id: number) => void;
+} | undefined>(undefined);
 
 
 const App = ()=> {
