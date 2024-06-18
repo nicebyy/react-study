@@ -8,18 +8,24 @@ import React, {createContext, Dispatch, useContext, useReducer, useRef} from "re
 import Edit from "./pages/Edit.tsx";
 
 export type DiaryType = {
-    id : number ,
-    createdDate : number,
-    emotionId : number,
-    content : string
+    id: number,
+    createdDate: number,
+    emotionId: number,
+    content: string
 }
+
+export type DiaryDispatchType = {
+    onCreate: (emotionId: number, createdDate: number, content: string) => void;
+    onUpdate: (id: number, emotionId: number, createdDate: number, content: string) => void;
+    onDelete: (id: number) => void;
+} | undefined
 
 type ActionType =
     | { type: 'CREATE', data: DiaryType }
     | { type: 'UPDATE', data: DiaryType }
     | { type: 'DELETE', data: { id: number } };
 
-const mockData : DiaryType[] = [
+const mockData: DiaryType[] = [
 
     {
         id: 1,
@@ -41,9 +47,9 @@ const mockData : DiaryType[] = [
     },
 ];
 
-const reducer = (state:DiaryType[], action:ActionType): DiaryType[] =>{
+const reducer = (state: DiaryType[], action: ActionType): DiaryType[] => {
 
-    switch (action.type){
+    switch (action.type) {
         case "CREATE" :
             return [action.data, ...state];
         case "UPDATE" :
@@ -60,34 +66,29 @@ const reducer = (state:DiaryType[], action:ActionType): DiaryType[] =>{
 }
 
 export const DiaryStateContext = createContext<DiaryType[] | undefined>([]);
-export const DiaryDispatchContext = createContext<{
-    onCreate: (emotionId: number, createdDate: number, content: string) => void;
-    onUpdate: (id: number, emotionId: number, createdDate: number, content: string) => void;
-    onDelete: (id: number) => void;
-} | undefined>(undefined);
+export const DiaryDispatchContext = createContext<DiaryDispatchType>(undefined);
 
-
-const App = ()=> {
+const App = () => {
 
     // const nav = useNavigate();
-    const [data,dispatch] = useReducer(reducer,mockData);
+    const [data, dispatch] = useReducer(reducer, mockData);
     const idRef = useRef(4);
 
-    const onCreate = (emotionId:number, createdDate:number, content:string)=>{
+    const onCreate = (emotionId: number, createdDate: number, content: string) => {
         dispatch({
-            type : "CREATE",
-            data : {
-                id : idRef.current++,
+            type: "CREATE",
+            data: {
+                id: idRef.current++,
                 createdDate,
                 emotionId,
                 content
             },
         })
     };
-    const onUpdate = (id:number, emotionId:number,createdDate:number, content:string)=>{
+    const onUpdate = (id: number, emotionId: number, createdDate: number, content: string) => {
         dispatch({
-            type : "UPDATE",
-            data : {
+            type: "UPDATE",
+            data: {
                 id,
                 createdDate,
                 emotionId,
@@ -96,10 +97,10 @@ const App = ()=> {
         })
     };
 
-    const onDelete = (id:number) => {
+    const onDelete = (id: number) => {
         dispatch({
-            type : "DELETE",
-            data : {
+            type: "DELETE",
+            data: {
                 id
             },
         })
@@ -127,13 +128,13 @@ const App = ()=> {
                         onDelete,
                     }}
                 >
-                <Routes>
-                    <Route path="/" element={<Home />}></Route>
-                    <Route path="/new" element={<New />}></Route>
-                    <Route path="/diary:id" element={<Diary />}></Route>
-                    <Route path="*" element={<NotFound />}></Route>
-                    <Route path={"/edit:id"} element={<Edit/>}></Route>
-                </Routes>
+                    <Routes>
+                        <Route path="/" element={<Home/>}></Route>
+                        <Route path="/new" element={<New/>}></Route>
+                        <Route path="/diary:id" element={<Diary/>}></Route>
+                        <Route path="*" element={<NotFound/>}></Route>
+                        <Route path={"/edit:id"} element={<Edit/>}></Route>
+                    </Routes>
                 </DiaryDispatchContext.Provider>
             </DiaryStateContext.Provider>
         </>
