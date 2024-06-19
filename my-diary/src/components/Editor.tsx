@@ -2,53 +2,41 @@ import "./Editor.css";
 import {EmotionItem} from "./EmotionItem.tsx";
 import Button from "./Button.tsx";
 import {useNavigate} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {DiaryType} from "../App.tsx";
+import {emotionList, EmotionType} from "../util/EmotionList.ts";
+import {getStringedDate} from "../util/getStringedDate.ts";
 
-type EmotionType = {
-    emotionId: number,
-    emotionName: string
-}
 
-type DiaryInputType = {
+export type DiaryInputType = {
     emotionId: number,
     createdDate: Date,
     content: string
 }
+interface EditorProps {
+    initData? : DiaryType
+    onSubmit : (data: DiaryInputType) => void;
+}
 
-const emotionList: EmotionType[] = [
-    {emotionId: 1, emotionName: "완전 좋음"},
-    {emotionId: 2, emotionName: "좋음"},
-    {emotionId: 3, emotionName: "그럭저럭"},
-    {emotionId: 4, emotionName: "나쁨"},
-    {emotionId: 5, emotionName: "끔찍함"},
-];
-
-const getStringedDate = (targetDate: Date): string => {
-
-    // yyyy-mm-dd
-    const year = targetDate.getFullYear();
-    let month: number | string = targetDate.getMonth() + 1;
-    let date: number | string = targetDate.getDate();
-
-    if (month < 10) {
-        month = `0${month}`;
-    }
-    if (date < 10) {
-        date = `0${date}`;
-    }
-
-    return `${year}-${month}-${date}`;
-};
-
-export const Editor = ({onSubmit}) => {
+export const Editor =  ({initData, onSubmit} : EditorProps) => {
 
     // const emotionId: number = 5;
     const nav = useNavigate();
+
     const [diaryData, setDiaryData] = useState<DiaryInputType>({
         createdDate: new Date(),
         emotionId: 3,
         content: "",
     });
+
+    useEffect(() => {
+        if(initData){
+            setDiaryData({
+                ...initData,
+                createdDate : new Date(Number(initData.createdDate))
+            })
+        }
+    }, [initData]);
 
     const onChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
 
@@ -65,7 +53,7 @@ export const Editor = ({onSubmit}) => {
         })
     }
 
-    const onEmotionChange = (emotionId : number)=>{
+    const onEmotionChange = (emotionId: number)=>{
         setDiaryData({
             ...diaryData,
             emotionId,
@@ -93,6 +81,7 @@ export const Editor = ({onSubmit}) => {
                 <div className="emotion_list_wrapper">
                     {
                         emotionList.map((emotion) => {
+
                             return (
                                 <EmotionItem
                                     onClick={()=>onEmotionChange(emotion.emotionId)}
@@ -111,6 +100,7 @@ export const Editor = ({onSubmit}) => {
                     name="content"
                     placeholder="오늘은 어땠나요?"
                     onChange={onChangeInput}
+                    value={diaryData.content}
                 />
             </section>
             <section className="button_section">

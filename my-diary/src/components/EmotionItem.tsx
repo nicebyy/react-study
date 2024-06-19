@@ -4,8 +4,8 @@ import {MouseEventHandler} from "react";
 
 
 export interface EmotionItemProps {
-    emotionId : number,
-    emotionName : string,
+    emotionId? : number,
+    emotionName? : string,
     isSelected? : boolean,
     onClick :  ()=>void,
 }
