@@ -2,9 +2,10 @@ import {useSearchParams} from "react-router-dom";
 import Header from "../components/Header.tsx";
 import Button from "../components/Button.tsx";
 import React, {useContext, useState} from "react";
-import {DiaryList} from "./DiaryList.tsx";
+import {DiaryList} from "../components/DiaryList.tsx";
 import {DiaryType} from "../App.tsx";
 import {useDiaryStore} from "../store/store.ts";
+import {usePageTitle} from "../hooks/usePageTitle.tsx";
 
 const getMonthlyData = (pivotDate:Date, data:DiaryType[])  : DiaryType[] => {
 
@@ -14,7 +15,7 @@ const getMonthlyData = (pivotDate:Date, data:DiaryType[])  : DiaryType[] => {
     return data.filter((item)=>beginTime<= item.createdDate && item.createdDate <= endTime);
 }
 const Home = () =>{
-
+    usePageTitle(`홈 화면`);
     const [pivotDate, setPivotDate] = useState(new Date());
 
     const {diaryData} = useDiaryStore();

@@ -5,10 +5,11 @@ import Header from "../components/Header.tsx";
 import Button from "../components/Button.tsx";
 import {Viewer} from "../components/Viewer.tsx";
 import {getStringedDate} from "../util/getStringedDate.ts";
+import {usePageTitle} from "../hooks/usePageTitle.tsx";
 
 
 const Diary = () =>{
-
+    usePageTitle(`일기 조회`);
     const nav = useNavigate();
     const {id} = useParams<{id : string}>();
 

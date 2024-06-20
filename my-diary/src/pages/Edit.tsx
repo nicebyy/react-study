@@ -4,8 +4,9 @@ import Button from "../components/Button.tsx";
 import {DiaryInputType, Editor} from "../components/Editor.tsx";
 import {useDiary} from "../hooks/useDiary.tsx";
 import {useDiaryStore} from "../store/store.ts";
+import {usePageTitle} from "../hooks/usePageTitle.tsx";
 const Edit = ()=>{
-
+    usePageTitle(`일기 수정`);
     const {onUpdate,onDelete} = useDiaryStore();
     const nav = useNavigate();
     const {id} = useParams<{id : string}>();

@@ -1,15 +1,17 @@
-import Button from "../components/Button.tsx";
+import Button from "./Button.tsx";
 import "./DiaryList.css"
-import {DiaryItem} from "../components/DiaryItem.tsx";
+import {DiaryItem} from "./DiaryItem.tsx";
 import {DiaryType} from "../util/MockData.ts";
 import {useNavigate} from "react-router-dom";
 import {ChangeEventHandler, useState} from "react";
+import {usePageTitle} from "../hooks/usePageTitle.tsx";
 
 interface DiaryListProps {
     data: DiaryType[];
 }
 
 export const DiaryList = ({data} : DiaryListProps)=>{
+    usePageTitle(`일기 목록`);
 
     const nav = useNavigate();
     const [sortType, setSortType] = useState<string>("latest");
