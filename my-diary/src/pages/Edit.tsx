@@ -1,13 +1,12 @@
-import {useContext, useEffect, useState} from "react";
-import {DiaryDispatchContext, DiaryDispatchType, DiaryStateContext, DiaryType} from "../App.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import Header from "../components/Header.tsx";
 import Button from "../components/Button.tsx";
 import {DiaryInputType, Editor} from "../components/Editor.tsx";
 import {useDiary} from "../hooks/useDiary.tsx";
+import {useDiaryStore} from "../store/store.ts";
 const Edit = ()=>{
 
-    const {onUpdate,onDelete}   = useContext(DiaryDispatchContext) as DiaryDispatchType;
+    const {onUpdate,onDelete} = useDiaryStore();
     const nav = useNavigate();
     const {id} = useParams<{id : string}>();
     const curDiary = useDiary(Number(id));

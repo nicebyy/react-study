@@ -1,6 +1,5 @@
 import "./EmotionItem.css";
 import {getEmotionImage} from "../util/getEmotionImage.ts";
-import {MouseEventHandler} from "react";
 
 
 export interface EmotionItemProps {

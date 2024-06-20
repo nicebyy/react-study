@@ -1,18 +1,17 @@
 import Header from "../components/Header.tsx";
 import Button from "../components/Button.tsx";
 import {DiaryInputType, Editor} from "../components/Editor.tsx";
-import {useContext} from "react";
-import {DiaryDispatchContext, DiaryDispatchType, DiaryType} from "../App.tsx";
 import {useNavigate} from "react-router-dom";
+import {useDiaryStore} from "../store/store.ts";
 
 const New = () =>{
 
-    const {onCreate} = useContext(DiaryDispatchContext) as DiaryDispatchType;
+    const diaryStore = useDiaryStore();
+
     const nav = useNavigate();
 
     const onSubmit = (input : DiaryInputType)=>{
-
-        onCreate(input.emotionId,input.createdDate.getTime(),input.content);
+        diaryStore.onCreate(input.emotionId,input.createdDate.getTime(),input.content);
         nav("/",{replace : true});
     }
 
