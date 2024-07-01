@@ -7,6 +7,7 @@ import Diary from "./pages/Diary.tsx";
 import React, {createContext, useEffect} from "react";
 import Edit from "./pages/Edit.tsx";
 import {useDiaryStore} from "./store/store.ts";
+import Login from "./pages/Login.tsx";
 // import {mockData} from "./util/MockData.ts";
 
 export type DiaryType = {
@@ -46,6 +47,7 @@ const App = () => {
 
             <Routes>
                 <Route path="/" element={<Home/>}></Route>
+                <Route path="/login" element={<Login/>}></Route>
                 <Route path="/new" element={<New/>}></Route>
                 <Route path="/diary/:id" element={<Diary/>}></Route>
                 <Route path="/diary/edit/:id" element={<Edit/>}></Route>
