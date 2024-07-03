@@ -6,6 +6,8 @@ import Button from "../components/Button.tsx";
 import {Viewer} from "../components/Viewer.tsx";
 import {getStringedDate} from "../util/getStringedDate.ts";
 import {usePageTitle} from "../hooks/usePageTitle.tsx";
+import {useDiaryStoreV2} from "../store/DiaryStoreV2.ts";
+import {useAuthStore} from "../store/AuthStore.ts";
 
 
 const Diary = () =>{

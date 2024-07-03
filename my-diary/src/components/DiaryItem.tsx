@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 export const DiaryItem = ({id, emotionId, createdDate, content} : DiaryType)=>{
 
     const nav = useNavigate();
-
+    console.log(`diary item = ${id}`);
     return (
         <div className="DiaryItem">
             <div
