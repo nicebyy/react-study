@@ -1,11 +1,13 @@
 import {useEffect, useState} from "react";
 import {DiaryType} from "../App.tsx";
 import {useNavigate} from "react-router-dom";
-import {useDiaryStore} from "../store/store.ts";
+// import {useDiaryStore} from "../store/store.ts";
+import {useDiaryStoreV2} from "../store/DiaryStoreV2.ts";
 
-export const useDiary = (id : number)=>{
+export const useDiary = (id : string)=>{
 
-    const{diaryData} = useDiaryStore();
+    // const{diaryData} = useDiaryStore();
+    const {diaryData} = useDiaryStoreV2();
 
     const [curDiary,setCurDiary] = useState<DiaryType>();
     const nav = useNavigate();

@@ -1,6 +1,7 @@
 import {create} from "zustand";
 import {DiaryType} from "../App.tsx";
 
+/**
 export type DiaryStore = {
     diaryData : DiaryType[],
     isLoading : boolean,
@@ -64,3 +65,4 @@ export const useDiaryStore = create<DiaryStore>((set) => ({
     }),
 }));
 
+ **/

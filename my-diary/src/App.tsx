@@ -6,17 +6,17 @@ import New from "./pages/New.tsx";
 import Diary from "./pages/Diary.tsx";
 import React, {createContext, useEffect} from "react";
 import Edit from "./pages/Edit.tsx";
-import {useDiaryStore} from "./store/store.ts";
+// import {useDiaryStore} from "./store/store.ts";
 import Login from "./pages/Login.tsx";
 import {useAuthStore} from "./store/AuthStore.ts";
 import {useDiaryStoreV2} from "./store/DiaryStoreV2.ts";
 // import {mockData} from "./util/MockData.ts";
 
 export type DiaryType = {
-    id: number,
-    createdDate: number,
-    emotionId: number,
-    content: string
+    id: string,
+    createdDate?: number,
+    emotionId?: number,
+    content?: string
 }
 const App = () => {
 

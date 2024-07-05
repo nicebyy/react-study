@@ -3,19 +3,24 @@ import Header from "../components/Header.tsx";
 import Button from "../components/Button.tsx";
 import {DiaryInputType, Editor} from "../components/Editor.tsx";
 import {useDiary} from "../hooks/useDiary.tsx";
-import {useDiaryStore} from "../store/store.ts";
+// import {useDiaryStore} from "../store/store.ts";
 import {usePageTitle} from "../hooks/usePageTitle.tsx";
+import {useDiaryStoreV2} from "../store/DiaryStoreV2.ts";
+import {useAuthStore} from "../store/AuthStore.ts";
 const Edit = ()=>{
     usePageTitle(`일기 수정`);
-    const {onUpdate,onDelete} = useDiaryStore();
+    // const {onUpdate,onDelete} = useDiaryStore();
     const nav = useNavigate();
     const {id} = useParams<{id : string}>();
-    const curDiary = useDiary(Number(id));
+    const curDiary = useDiary(String(id));
+    const {onUpdate,onDelete} = useDiaryStoreV2();
+    const authStore = useAuthStore();
 
     const onSubmit = (input : DiaryInputType)=>{
 
         if(window.confirm("수정하시겠습니까 ?")){
-            onUpdate(Number(id),input.emotionId,input.createdDate.getTime(),input.content);
+
+            onUpdate(authStore.accessToken,String(id),input.emotionId,input.createdDate.getTime(),input.content);
             nav("/",{replace:true});
         }
     }
@@ -23,7 +28,7 @@ const Edit = ()=>{
     const onClickDelete = ()=>{
 
         if (window.confirm("일기를 삭제할까요 ? ")){
-            onDelete(Number(id));
+            onDelete(authStore.accessToken,String(id));
             nav("/",{replace : true});
         }
     }

@@ -1,10 +1,10 @@
 import Button from "./Button.tsx";
 import "./DiaryList.css"
 import {DiaryItem} from "./DiaryItem.tsx";
-import {DiaryType} from "../util/MockData.ts";
 import {useNavigate} from "react-router-dom";
 import {ChangeEventHandler, useState} from "react";
 import {usePageTitle} from "../hooks/usePageTitle.tsx";
+import {DiaryType} from "../App.tsx";
 
 interface DiaryListProps {
     data: DiaryType[];
@@ -42,7 +42,9 @@ export const DiaryList = ({data} : DiaryListProps)=>{
             </div>
             <div className="list_wrapper">
                 {
-                    getSortedDate().map((item)=> {
+                    // getSortedDate()
+                    data
+                        .map((item)=> {
                         return <DiaryItem key={item.id} {...item}></DiaryItem>;
                     })
                 }

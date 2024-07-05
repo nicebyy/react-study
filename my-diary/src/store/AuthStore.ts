@@ -8,7 +8,7 @@ export type AuthStore = {
     accessToken?: string,
     refreshToken?: string,
     isAuthenticated?: boolean,
-    refreshAccessToken: () => void,
+    refreshAccessToken: () => Promise<boolean>,
     setAccessToken: (token: string) => void,
     setRefreshToken: (token: string) => void,
     loginWithEmail: (data?: LoginInput) => Promise<boolean>,
@@ -21,13 +21,14 @@ export const useAuthStore = create<AuthStore>((set,get) => {
     return{
         accessToken: cookies.get('access_token') || "",
         refreshToken: cookies.get('refresh_token') || "",
-        isAuthenticated:cookies.get('access_token') && cookies.get('refresh_token'),
+        isAuthenticated: cookies.get('access_token')!=null && cookies.get('refresh_token')!=null,
 
-        refreshAccessToken: async () => {
-            console.log(`refresh Accesstoken :::: `)
+        refreshAccessToken: async () : Promise<boolean> => {
             const responseToken = {
                 accessToken: "",
             };
+
+            let authenticationCond = get().isAuthenticated ?? false;
 
             await axios.get("http://localhost:8080/auth/refresh", {
                     withCredentials: true,
@@ -41,17 +42,18 @@ export const useAuthStore = create<AuthStore>((set,get) => {
 
             }).catch((err) => {
                 const {error, message, statusCode} = err.response.data;
-
+                authenticationCond = false;
                 if (statusCode === 401) {
-                    console.log(message);
                 }
             });
 
             set(() => ({
-                refreshToken : get().refreshToken,
-                accessToken: responseToken.accessToken,
-                isAuthenticated: true
+                refreshToken : authenticationCond? get().refreshToken : "",
+                accessToken: authenticationCond? responseToken.accessToken : "",
+                isAuthenticated: authenticationCond
             }));
+
+            return authenticationCond;
         },
         setAccessToken: (token: string) => set(() => {
             return {accessToken: token};
@@ -85,7 +87,6 @@ export const useAuthStore = create<AuthStore>((set,get) => {
                 const {error, message, statusCode} = err.response.data;
 
                 if (statusCode === 401) {
-                    console.log(message);
                 }
             });
 

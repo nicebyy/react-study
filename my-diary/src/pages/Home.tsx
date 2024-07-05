@@ -3,8 +3,8 @@ import Header from "../components/Header.tsx";
 import Button from "../components/Button.tsx";
 import React, {useContext, useEffect, useState} from "react";
 import {DiaryList} from "../components/DiaryList.tsx";
-import {DiaryType} from "../App.tsx";
-import {useDiaryStore} from "../store/store.ts";
+// import {DiaryType} from "../App.tsx";
+// import {useDiaryStore} from "../store/store.ts";
 import {usePageTitle} from "../hooks/usePageTitle.tsx";
 import {useAuthStore} from "../store/AuthStore.ts";
 import {useDiaryStoreV2} from "../store/DiaryStoreV2.ts";
@@ -23,15 +23,20 @@ const Home = () =>{
             sortCond: `latest`,
             dateCond: `${pivotDate.getFullYear()}-${pivotDate.getMonth()+1}-01`
         }
-        const result = diaryStoreV2.getDiaryList(authStore.accessToken,requestDto);
+        const result : Promise<boolean> = diaryStoreV2.getDiaryList(authStore.accessToken,requestDto);
         console.log(result);
-        if(!result){
-            console.log(`result :: ${result}`)
-            authStore.refreshAccessToken();
-            diaryStoreV2.getDiaryList(authStore.accessToken,requestDto);
-        }
 
-        console.log(diaryStoreV2.diaryData);
+        diaryStoreV2.getDiaryList(authStore.accessToken,requestDto)
+            .then(result=>{
+                if(!result){
+                    authStore.refreshAccessToken()
+                        .then(refreshAccessTokenResult=>{
+                            if(refreshAccessTokenResult){
+                                diaryStoreV2.getDiaryList(authStore.accessToken,requestDto);
+                            }
+                        })
+                }
+            });
     }, [pivotDate]);
 
     const onIncreaseMonth = () =>{

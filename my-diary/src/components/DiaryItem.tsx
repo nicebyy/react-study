@@ -1,12 +1,13 @@
 import {getEmotionImage} from "../util/getEmotionImage.ts";
 import Button from "./Button.tsx";
 import "./DiaryItem.css";
-import {DiaryType} from "../util/MockData.ts";
+
 import {useNavigate} from "react-router-dom";
+import {DiaryType} from "../App.tsx";
 export const DiaryItem = ({id, emotionId, createdDate, content} : DiaryType)=>{
 
     const nav = useNavigate();
-    console.log(`diary item = ${id}`);
+
     return (
         <div className="DiaryItem">
             <div

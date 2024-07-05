@@ -2,7 +2,7 @@ import Header from "../components/Header.tsx";
 import Button from "../components/Button.tsx";
 import {DiaryInputType, Editor} from "../components/Editor.tsx";
 import {useNavigate} from "react-router-dom";
-import {useDiaryStore} from "../store/store.ts";
+// import {useDiaryStore} from "../store/store.ts";
 import {useEffect} from "react";
 import {usePageTitle} from "../hooks/usePageTitle.tsx";
 import {useAuthStore} from "../store/AuthStore.ts";
@@ -16,7 +16,6 @@ const New = () =>{
     const authStore = useAuthStore();
     const nav = useNavigate();
 
-    console.log(authStore.isAuthenticated)
     useEffect(() => {
         if(!authStore.isAuthenticated){
             nav('/login');
