@@ -1,6 +1,7 @@
 import {create} from "zustand";
 import {DiaryType} from "../App.tsx";
 import axios from "axios";
+import {useAuthStore} from "./AuthStore.ts";
 // import {DiaryStore} from "./store.ts";
 
 export interface DiaryRequestDto{
@@ -19,6 +20,8 @@ export type DiaryStoreV2 = {
     onDelete : (token?: string,id?:string) => void,
 }
 export const useDiaryStoreV2 = create<DiaryStoreV2>((set,get) => {
+
+    useAuthStore.getState().accessToken
 
     return{
         diaryData: [],
