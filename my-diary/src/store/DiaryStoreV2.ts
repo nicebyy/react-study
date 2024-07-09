@@ -29,10 +29,11 @@ export const useDiaryStoreV2 = create<DiaryStoreV2>((set,get) => {
 
             const diaryData : DiaryType[] = [];
             let cond = false;
-            await axios.post("http://127.0.0.1:8080/diary/diaries",{
-                sortCond : dto?.sortCond,
-                dateCond : dto?.dateCond
-            },{
+            await axios.get("http://127.0.0.1:8080/diary/diaries",{
+                params:{
+                    sortCond : dto?.sortCond,
+                    dateCond : dto?.dateCond
+                },
                 withCredentials:true,
                 headers:{
                     Authorization: `Bearer ${token}`
