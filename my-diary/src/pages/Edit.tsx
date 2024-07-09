@@ -14,13 +14,12 @@ const Edit = ()=>{
     const {id} = useParams<{id : string}>();
     const curDiary = useDiary(String(id));
     const {onUpdate,onDelete} = useDiaryStoreV2();
-    const authStore = useAuthStore();
 
     const onSubmit = (input : DiaryInputType)=>{
 
         if(window.confirm("수정하시겠습니까 ?")){
 
-            onUpdate(authStore.accessToken,String(id),input.emotionId,input.createdDate.getTime(),input.content);
+            onUpdate(String(id),input.emotionId,input.createdDate.getTime(),input.content);
             nav("/",{replace:true});
         }
     }
@@ -28,7 +27,7 @@ const Edit = ()=>{
     const onClickDelete = ()=>{
 
         if (window.confirm("일기를 삭제할까요 ? ")){
-            onDelete(authStore.accessToken,String(id));
+            onDelete(String(id));
             nav("/",{replace : true});
         }
     }

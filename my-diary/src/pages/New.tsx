@@ -13,18 +13,18 @@ const New = () =>{
 
     // const diaryStore = useDiaryStore();
     const diaryStore = useDiaryStoreV2();
-    const authStore = useAuthStore();
+    const isAuthenticated = useAuthStore.getState().isAuthenticated;
     const nav = useNavigate();
 
     useEffect(() => {
-        if(!authStore.isAuthenticated){
+        if(!isAuthenticated){
             nav('/login');
         }
     }, []);
 
 
     const onSubmit = (input : DiaryInputType)=>{
-        diaryStore.onCreate(authStore.accessToken,input.emotionId,input.createdDate.getTime(),input.content);
+        diaryStore.onCreate(input.emotionId,input.createdDate.getTime(),input.content);
         nav("/",{replace : true});
     }
 

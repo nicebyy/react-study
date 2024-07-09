@@ -13,7 +13,6 @@ const Home = () =>{
     usePageTitle(`홈 화면`);
     const [pivotDate, setPivotDate] = useState(new Date());
 
-    const authStore = useAuthStore();
     const diaryStoreV2 = useDiaryStoreV2();
 
 
@@ -23,20 +22,9 @@ const Home = () =>{
             sortCond: `latest`,
             dateCond: `${pivotDate.getFullYear()}-${pivotDate.getMonth()+1}-01`
         }
-        const result : Promise<boolean> = diaryStoreV2.getDiaryList(authStore.accessToken,requestDto);
+        const result : Promise<boolean> = diaryStoreV2.getDiaryList(requestDto);
         console.log(result);
 
-        diaryStoreV2.getDiaryList(authStore.accessToken,requestDto)
-            .then(result=>{
-                if(!result){
-                    authStore.refreshAccessToken()
-                        .then(refreshAccessTokenResult=>{
-                            if(refreshAccessTokenResult){
-                                diaryStoreV2.getDiaryList(authStore.accessToken,requestDto);
-                            }
-                        })
-                }
-            });
     }, [pivotDate]);
 
     const onIncreaseMonth = () =>{
