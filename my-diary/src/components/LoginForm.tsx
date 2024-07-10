@@ -15,7 +15,7 @@ interface LoginFormProps {
 export const LoginForm = ({onLogin} : LoginFormProps)=>{
 
     const [loginData,setLoginData] = useState<LoginInput>();
-    const authStore = useAuthStore();
+
     const login = ()=>{
         onLogin(loginData);
     }
@@ -29,10 +29,6 @@ export const LoginForm = ({onLogin} : LoginFormProps)=>{
             ...loginData,
             [name]: value,
         })
-    }
-
-    const refresh = ()=>{
-        authStore.refreshAccessToken();
     }
 
     return (
@@ -54,11 +50,6 @@ export const LoginForm = ({onLogin} : LoginFormProps)=>{
                     text="로그인"
                     type={"POSITIVE"}
                     onClick={login}
-                />
-                <Button
-                    text="토큰재발급"
-                    type={"POSITIVE"}
-                    onClick={refresh}
                 />
             </section>
         </div>

@@ -6,7 +6,7 @@ import {Cookies} from "react-cookie";
  * 환경 별 path 분리 및 url 상수화 할것 .
  */
 const BASE_URL = "http://localhost:8080";
-const REFRESH_AUTH_URL = "/auth/refresh";
+const REFRESH_AUTH_URL = "/auth/refreshV2";
 
 const axiosInstance = ()=>{
 
@@ -31,7 +31,7 @@ apiInstance.interceptors.request.use(
     }
 );
 
-apiInstance.interceptors.response.use(response => {
+apiInstance.interceptors.response.use(response  => {
     return response;
 }, async error => {
     const originalRequest = error.config;
@@ -49,8 +49,7 @@ apiInstance.interceptors.response.use(response => {
                     },
                 }
             ).then(response => {
-                console.log(`accesstoken saved`)
-                cookies.set("access_token",response.data.accessToken);
+                cookies.set(`access_token`,response.headers[`authorization`].split(" ")[1]);
             })
             return apiInstance(originalRequest);
         } catch (refreshError) {

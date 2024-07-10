@@ -23,8 +23,6 @@ export type DiaryStoreV2 = {
 }
 export const useDiaryStoreV2 = create<DiaryStoreV2>((set, get) => {
 
-    useAuthStore.getState().accessToken
-
     return {
         diaryData: [],
         getDiaryList: async (dto?: DiaryRequestDto): Promise<boolean> => {

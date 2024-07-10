@@ -2,15 +2,11 @@ import {create} from "zustand";
 import axios from "axios";
 import {LoginInput} from "../components/LoginForm.tsx";
 import {Cookies} from "react-cookie";
+import {apiInstance} from "../util/AxiosInstance.ts";
 
 export type AuthStore = {
 
-    accessToken?: string,
-    refreshToken?: string,
     isAuthenticated?: boolean,
-    refreshAccessToken: () => Promise<boolean>,
-    setAccessToken: (token: string) => void,
-    setRefreshToken: (token: string) => void,
     loginWithEmail: (data?: LoginInput) => Promise<boolean>,
 }
 
@@ -19,71 +15,27 @@ export const useAuthStore = create<AuthStore>((set,get) => {
     const cookies = new Cookies();
 
     return{
-        accessToken: cookies.get('access_token') || "",
-        refreshToken: cookies.get('refresh_token') || "",
-        isAuthenticated: cookies.get('access_token')!=null && cookies.get('refresh_token')!=null,
+        isAuthenticated: cookies.get('access_token')!=null,
 
-        refreshAccessToken: async () : Promise<boolean> => {
-            const responseToken = {
-                accessToken: "",
-            };
-
-            let authenticationCond = get().isAuthenticated ?? false;
-
-            await axios.get("http://localhost:8080/auth/refresh", {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${get().refreshToken}`
-                    },
-                }
-            ).then(response => {
-                responseToken.accessToken = response.data.accessToken;
-                cookies.set(`access_token`,responseToken.accessToken);
-
-            }).catch((err) => {
-                const {error, message, statusCode} = err.response.data;
-                authenticationCond = false;
-                if (statusCode === 401) {
-                }
-            });
-
-            set(() => ({
-                refreshToken : authenticationCond? get().refreshToken : "",
-                accessToken: authenticationCond? responseToken.accessToken : "",
-                isAuthenticated: authenticationCond
-            }));
-
-            return authenticationCond;
-        },
-        setAccessToken: (token: string) => set(() => {
-            return {accessToken: token};
-        }),
-        setRefreshToken: (token: string) => set(() => {
-            return {refreshToken: token};
-        }),
         loginWithEmail: async (data?: LoginInput) => {
+
+            console.log(`call loginWithEmail`)
 
             let cond: boolean = false;
 
-            const responseToken = {
-                accessToken: "",
-                refreshToken: ""
-            };
-
-            await axios.post("http://localhost:8080/auth/login", {
-                    email: data?.email,
-                    password: data?.password
-                }, {withCredentials: true}
-            ).then(response => {
+            await axios.post("http://localhost:8080/auth/loginV2",{
+                email: data?.email,
+                password: data?.password
+            }).then(response => {
+                console.log(response);
                 if (response.status === 200) {
 
-                    responseToken.accessToken = response.data.accessToken;
-                    responseToken.refreshToken = response.data.refreshToken;
-                    cookies.set(`access_token`,responseToken.accessToken);
-                    cookies.set(`refresh_token`, responseToken.refreshToken);
+                    cookies.set(`access_token`,response.headers[`authorization`].split(" ")[1]);
+                    cookies.set(`refresh_token`, response.headers[`refresh_token`]);
                     cond = true;
                 }
             }).catch((err) => {
+                console.log(err);
                 const {error, message, statusCode} = err.response.data;
 
                 if (statusCode === 401) {
@@ -92,8 +44,6 @@ export const useAuthStore = create<AuthStore>((set,get) => {
 
             set(() => {
                 return {
-                    accessToken: responseToken.accessToken,
-                    refreshToken: responseToken.refreshToken,
                     isAuthenticated: cond
                 }
             })
