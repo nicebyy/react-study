@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Product} from "@/pages";
 import axios from "axios";
+import styles from "./ProductList.module.css";
+import Link from "next/link";
 import Image from "next/image";
 
 export default function ProductList() {
@@ -17,18 +19,21 @@ export default function ProductList() {
 
     return (
         <ul>
-            {products &&
-                products.map((product: Product) => {
+            {
+                products?.map((product: Product) => {
                     return (
-                        <li key={product.id}>{product.name}
-                            <Image
-                                src={product.imageUrl}
-                                alt={product.name}
-                                width={300}
-                                height={300}
-                            ></Image>
-                            <div>{product.name}</div>
-                            <div>{product.price}</div>
+                        <li key={product.id} className={styles.item}>
+                            <Link href={`/products/${product.id}`}>
+                                <div>
+                                    <Image
+                                        src={product.imageUrl}
+                                        alt={product.name}
+                                        width={300}
+                                        height={300}
+                                    ></Image>
+                                </div>
+                                <div>{product.name}</div>
+                            </Link>
                         </li>
                     );
                 })}
