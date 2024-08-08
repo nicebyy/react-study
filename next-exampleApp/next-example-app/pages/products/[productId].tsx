@@ -1,10 +1,11 @@
 import React from 'react';
 import {GetServerSideProps} from "next";
 import ProductHeader from "@/components/ProductHeader";
-import axios from "axios";
 import {Product} from "@/pages";
+import {fetchProductById} from "@/api";
+import ProductInfo from "@/components/product-detail/ProductInfo";
 
-interface ProductDetailProps {
+export interface ProductDetailProps {
     product: Product;
 }
 
@@ -15,7 +16,7 @@ export default function ProductDetailPage({product}: ProductDetailProps) {
     return (
         <div>
             <ProductHeader title={title}/>
-            <p>{product.name}</p>
+            <ProductInfo product={product}/>
         </div>
     );
 }
@@ -23,13 +24,11 @@ export default function ProductDetailPage({product}: ProductDetailProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const productId = context.params?.productId;
-
-    const response = await axios.get(`http://localhost:4000/products/${productId}`);
-    const product: Product = response.data;
+    const {data} = await fetchProductById(String(productId));
 
     return {
         props: {
-            product
+            product: data
         }
     };
 };

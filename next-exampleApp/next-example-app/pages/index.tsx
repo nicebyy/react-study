@@ -1,5 +1,5 @@
 import React from "react";
-import ProductList from "@/components/ProductList";
+import ProductList from "@/components/product-list/ProductList";
 import ProductHeader from "@/components/ProductHeader";
 
 export type Product = {
