@@ -1,8 +1,8 @@
 import React from 'react';
 import {Cart, CartPageProps} from "@/pages/cart";
 import Image from "next/image";
-import {removeCartItem} from "@/api";
 import {useRouter} from "next/router";
+import axios from "axios";
 
 export default function CartList({carts}: CartPageProps) {
 
@@ -14,10 +14,17 @@ export default function CartList({carts}: CartPageProps) {
 
     const router = useRouter();
     const removeCart = async (id: string) => {
-        const response = await removeCartItem(id);
-        alert(`${response.data.name} 삭제가 되었습니다.`)
 
-        router.push(`/cart`);
+        // const response = await removeCartItem(id);
+        // alert(`${response.data.name} 삭제가 되었습니다.`)
+        // router.replace(router.asPath);
+
+        const {data} = await axios.post(`http://localhost:3000/api/carts`, {
+            id: id
+        });
+        alert(data);
+        await router.replace(router.asPath);
+
     }
     return (
         <div>
